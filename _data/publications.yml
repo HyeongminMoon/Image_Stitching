@@ -1,0 +1,4 @@
+featured:
+- {name: '인공훈장: 인공지능을 활용한 서체 분류 및 한자 인식 어플리케이션', url: 'https://hyeongminmoon.github.io/FRCNN_Calligraphy/'}
+- {name: '엣지 컴퓨팅: tfjs(tensorflow on javascript)를 이용한 웹GL기반 AI 어플리케이션 띄우기', url: 'https://hyeongminmoon.github.io/tfjs_Edge-computing-by-inference-AImodel-on-WebGL/'}
+- {name: '딥러닝 스케치: CNN Segmentation모델을 활용한 스케치모델', url: 'https://hyeongminmoon.github.io/U-2-Net_portrait_sketch/'}

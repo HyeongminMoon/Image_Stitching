@@ -1,0 +1,11 @@
+menu:
+- {name: 'Home', url: 'https://hyeongminmoon.github.io'}
+- {name: 'CV', url: 'https://hyeongminmoon.github.io/cv'}
+- {name: 'Contact', url: 'https://hyeongminmoon.github.io/contact'}
+
+social:
+- {icon: 'github', link: 'https://github.com/HyeongminMoon'}
+- {icon: 'linkedin', link: 'https://www.linkedin.com/in/hyeongmin-moon-09aaa3164/'}
+
+contacts:
+- {name: 'Hyeongmin Moon', title: 'AI Engineer', department: 'Computer Vision', institution: 'Vitasoft', institution_address: 'Guro, Seoul', phone: '(+82) 10-9407-3526', email: 'mohomin123@gmail.com'}
