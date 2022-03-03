@@ -30,7 +30,7 @@
     셀로 이루어진 매우 간단한 연료전지 시편 판 이미지들을 이어붙어야 했는데, 이 경우가 그랬다.</p>
 <p class="jm-font"> - 따라서 성능향상을 위해 이 모든 구간에 딥러닝을 적용할 수 있다. 늘 반복하여 말하지만 딥러닝은 하나의 도구이다. 구글에서 연구된 각 과정에 딥러닝을 활용하여 만든
     DELF라는 모델이 있다. 적용해 보니 여전히 이미지가 너무 단순하여 매칭이 잘 안되는 모습을 볼 수 있다.</p>
-<img src="https://user-images.githubusercontent.com/32811724/156486140-818c3965-2b51-49e4-8ffe-4ef7a6f0f92f.png" width="45%"></img>
+<img src="https://user-images.githubusercontent.com/32811724/156490595-7078ef8d-0e55-4e3c-9665-c9a7c43ba39d.JPG" width="45%"></img>
 <br></br>
 
 <h5 class="jm-font"> <b>커스텀 스티칭</b> </h5>
@@ -41,11 +41,29 @@
     입을 모아서 그렇게 진행했으나, 실패했다. 따라서 나는 이 매치를 필터링하는 방법을 시도해볼 수 있는 시간을 달라고 제안했고, BF Matcher와 Knn match 알고리즘, 그리고 여러가지 thresholding으로
     해결했다. 그리하여 필터링된 매칭은 다음과 같다.</p>
 <img src="https://user-images.githubusercontent.com/32811724/156486210-f1c93a01-2d12-4e46-8d14-7f62bb68c2e0.JPG" width="45%"></img>
-<p class="jm-font"> - 여전히 노이즈가 있지만 이제 규칙이 보이기 시작했다. mean이나 median을 구해 그대로 적용해도 왠만한 경우에 잘 들어맞는다. </p>
+<p class="jm-font"> - 여전히 노이즈가 있지만 이제 규칙이 보이기 시작했다. mean이나 median을 구해 그대로 적용해도 왠만한 경우에 잘 들어맞는다. 여기에 이상치 검출 알고리즘인 RANSAC 알고리즘을 
+    적용하여 이상치를 제거하면 다음과 같다.</p>
+<img src="https://user-images.githubusercontent.com/32811724/156486212-6d9aaaef-2482-4a3a-a3f2-db4c876888b4.JPG" width="45%"></img>
+<p class="jm-font"> - 붙인 결과</p>
+<img src="https://user-images.githubusercontent.com/32811724/156486214-7611a44d-8d79-4d24-88bd-4154eeffa5e4.JPG" width="45%"></img>
 <br></br>
 
+<h5 class="jm-font"> <b>결과 다듬기</b> </h5>
+<p class="jm-font"> - 위 방법으로 16개의 이미지를 모두 붙이면 다음과 같다.</p>
+<img src="https://user-images.githubusercontent.com/32811724/156486205-e8ab76aa-58f5-4f9e-a139-c511c24e9531.JPG" width="45%"></img>
+<p class="jm-font"> - 잘 붙긴했는데 이쁘지가 않다. 우선 아무리 잘 붙었더라도 시편이 중간에 잘리지 않아야 할 것 같았다. 그래서 시편을 세그멘테이션하는 모델을 간단히 학습하여 시편의 위치를 구한 뒤,
+    이미지를 붙일때에 시편의 중간지점을 잡아 붙이는 알고리즘을 적용했다. 사용한 모델은 U2Net이다. 세그멘테이션 결과와 그를 이용해 재조합한 이미지이다.</p>
+<img src="https://user-images.githubusercontent.com/32811724/156486167-2e2fe720-96e3-4666-81ed-02e0687cb5f3.JPG" width="45%"></img>
+<img src="https://user-images.githubusercontent.com/32811724/156486206-459c8465-24e3-441e-906f-63238a610368.JPG" width="45%"></img>
+<p class="jm-font"> - 이제 밝기와 배경만 맞추면 된다. 이미지 색상공간을 hsv로 바꾼 뒤 위에서 구한 경계면 부근의 히스토그램을 비슷하게 맞추는 알고리즘을 적용했다. 배경도 비슷하게 하면 자연스럽게
+    빈 공간을 채우는 것이 가능하나, 프로젝트의 최종목적이 시편을 정렬하고 특징을 추출하는 것이기 때문에 배경색을 골라서 적용해달라는 요청에 UI와의 편의성을 고려하여 평균 단일 색을 구해서 채우도록
+    했다. 여담으로, 늘 작업 전달에는 목적이 함께 전달되어야 한다는 것이 나의 개발철학이다. 무심코 수단(방법)이 작업 전달의 주체가 되는 경우가 많은데, 이 경우 그 방법에 문제가 발생시 쉽게 해결할 수 있음에도
+    목적을 모르면 지시를 대기할 수 밖에 없다. 또한 더 나은 방법이 있어도 쉽사리 적용하지 못한다. 따라서 나는 작업을 전달 받을때 전후구조(input과 output)와 작업의 목적을 확실히 하고 가는 편이다.
+    잡담이 길어졌다. 그리하여 나온 최종 결과는 다음과 같다. 이제 좀 이쁘다.</p>
+<img src="https://user-images.githubusercontent.com/32811724/156486203-734fcc8f-4ec8-41b4-94f1-e4bfab6e7ad9.JPG" width="45%"></img>
+
 <script src="https://utteranc.es/client.js"
-        repo="HyeongminMoon/FRCNN_trademark_similarity"
+        repo="HyeongminMoon/Image_Stitching"
         issue-term="title"
         theme="github-light"
         crossorigin="anonymous"
