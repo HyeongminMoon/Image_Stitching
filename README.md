@@ -20,3 +20,21 @@ python main.py --port 원하는 포트번호(숫자)
 
 4. 인공지능 모델
 stitching/saved_models에 ~~저장되어있음.~~ 현 레파지토리에선 제공하지 않음.
+
+Image_Stitching
+│   README.md
+│   LICENSE
+|   stitching_api.py      # 특징 추출, 스티칭 모듈 등의 예시 api
+|   requirements.txt
+│
+└───stitching
+│   │   __init__.py
+│   │   util.py
+│   │   desc_extractor.py  # keypoint, descriptor, matching algorithms
+|   |   feat_extractor.py  # fine grained resnet101에 기반한 시편 특징 추출 모델
+|   |   segfuel.py         # U2Net에 기반한 연료전지 시편 세그멘테이션 모델
+│   │   stiching.py        # 이미지 스티칭에 관한 구현
+│   │   
+│   └───u2net
+│       │   ... 
+────────────────
